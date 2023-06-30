@@ -6,6 +6,7 @@ const express = require("express"),
   layouts = require("express-ejs-layouts"),
   mongoose = require("mongoose"),
   methodOverride = require("method-override"),
+  //Require the three modules.
   expressSession = require("express-session"),
   cookieParser = require("cookie-parser"),
   connectFlash = require("connect-flash"),
@@ -49,20 +50,24 @@ router.use(
 
 router.use(express.json());
 router.use(cookieParser("secret_passcode"));
+//Configure your Express.js application to use cookie-parser as middleware.
 router.use(
   expressSession({
     secret: "secret_passcode",
     cookie: {
       maxAge: 4000000
     },
+    //Configure expresssession to use cookie-parser.
     resave: false,
     saveUninitialized: false
   })
 );
+//Configure your application to use connect-flash as middleware.
 router.use(connectFlash());
 
 router.use((req, res, next) => {
-  res.locals.flashMessages = req.flash();
+  //Assign flash messages to the local flashMessages variable on the response object.
+res.locals.flashMessages = req.flash();
   next();
 });
 

@@ -12,6 +12,7 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  //items property, which is an array of strings to reflect items and ingredients they include
   items: [],
   zipCode: {
     type: Number,

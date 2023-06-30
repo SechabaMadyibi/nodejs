@@ -20,6 +20,7 @@ exports.saveSubscriber = (req, res) => {
     email: req.body.email,
     zipCode: req.body.zipCode
   });
+  //If it fails, respond with the error that occurred.
   newSubscriber.save((error, result) => {
     if (error) res.send(error);
     res.render("thanks");

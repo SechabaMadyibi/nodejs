@@ -1,30 +1,36 @@
 "use strict";
 
-const express = require("express"),
+const express = require ("express"),
   app = express(),
   errorController = require("./controllers/errorController"),
   homeController = require("./controllers/homeController"),
   layouts = require("express-ejs-layouts"),
+  // Require the MongoDB module.
   MongoDB = require("mongodb").MongoClient,
   dbURL = "mongodb://localhost:27017",
   dbName = "recipe_db";
 
+  // Set up a connection to your local database server.
+  //callback function
 MongoDB.connect(
   dbURL,
-  (error, client) => {
+   (error, client) => {
     if (error) throw error;
+  //   Get the recipe_db database from your connection to the MongoDB server.
     let db = client.db(dbName);
     db.collection("contacts")
+//     Find all records in the contacts collection.
       .find()
       .toArray((error, data) => {
         if (error) throw error;
+        //print contacts in an array on the console
         console.log(data);
       });
-
+// insert method runs on a MongoDB collection to add elements of a JavaScript object to a new document
     db.collection("contacts").insert(
       {
         name: "Freddie Mercury",
-        email: "fred@queen.com"
+        email: "fred@queen.com",
       },
       (error, db) => {
         if (error) throw error;

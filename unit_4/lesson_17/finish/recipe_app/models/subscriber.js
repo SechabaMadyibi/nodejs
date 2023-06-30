@@ -17,6 +17,7 @@ const subscriberSchema = new mongoose.Schema({
     min: [10000, "Zip code too short"],
     max: 99999
   },
+  //reference course model. Creating model association
   courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }]
 });
 

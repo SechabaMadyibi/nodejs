@@ -4,12 +4,16 @@ const Subscriber = require("../models/subscriber");
 
 exports.getAllSubscribers = (req, res) => {
   Subscriber.find({})
+  //Return a promise action. from the find query.
     .exec()
+    //Send saved data to the next then code block.
     .then(subscribers => {
+      //Serve results from the database.
       res.render("subscribers", {
         subscribers: subscribers
       });
     })
+    //Catch errors that are rejected in the promise.
     .catch(error => {
       console.log(error.message);
       return [];
@@ -24,11 +28,15 @@ exports.getSubscriptionPage = (req, res) => {
 };
 
 exports.saveSubscriber = (req, res) => {
+  /*Add an action to save subscribers. saveSubscriber collects data from the request and allows the body-parser package
+  to read the request body’s contents. . A new model instance is created, mapping the subscriber’s fields to the request
+body parameters*/
   let newSubscriber = new Subscriber({
     name: req.body.name,
     email: req.body.email,
     zipCode: req.body.zipCode
   });
+  //Save a new subscriber with a promise return.
   newSubscriber
     .save()
     .then(result => {

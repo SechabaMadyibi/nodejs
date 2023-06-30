@@ -20,7 +20,9 @@ app.on("request", (req, res) => {
     body = Buffer.concat(body).toString();
     console.log(`Request Body Contents: ${body}`);
   });
-
+  // console.log(req.method);
+  // console.log(req.url);
+  // console.log(req.headers);
   console.log(`Method: ${getJSONString(req.method)}`);
   console.log(`URL: ${getJSONString(req.url)}`);
   console.log(`Headers: ${getJSONString(req.headers)}`);

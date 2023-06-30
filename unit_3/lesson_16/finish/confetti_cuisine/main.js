@@ -27,9 +27,11 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.render("index");
 });
-
+//Add a route to view all subscribers.
 app.get("/subscribers", subscribersController.getAllSubscribers);
+//Add a route to view the contact page.
 app.get("/contact", subscribersController.getSubscriptionPage);
+//Add a route to handle posted form data.
 app.post("/subscribe", subscribersController.saveSubscriber);
 
 app.get("/courses", homeController.showCourses);

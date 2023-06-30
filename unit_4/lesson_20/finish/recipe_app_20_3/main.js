@@ -5,6 +5,7 @@ const express = require("express"),
   router = express.Router(),
   layouts = require("express-ejs-layouts"),
   mongoose = require("mongoose"),
+  //Require the method-override module.
   methodOverride = require("method-override"),
   errorController = require("./controllers/errorController"),
   homeController = require("./controllers/homeController"),
@@ -12,8 +13,7 @@ const express = require("express"),
   usersController = require("./controllers/usersController"),
   coursesController = require("./controllers/coursesController"),
   Subscriber = require("./models/subscriber");
-
-mongoose.Promise = global.Promise;
+ mongoose.Promise = global.Promise;
 
 mongoose.connect(
   "mongodb://localhost:27017/recipe_db",
@@ -37,7 +37,7 @@ router.use(
     extended: false
   })
 );
-
+//Configure the application router to use methodOverride as middleware.
 router.use(
   methodOverride("_method", {
     methods: ["POST", "GET"]
@@ -53,7 +53,9 @@ router.get("/contact", homeController.getSubscriptionPage);
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
 router.post("/users/create", usersController.create, usersController.redirectView);
+//Add routes to handle viewing
 router.get("/users/:id/edit", usersController.edit);
+//Process data from the edit form, and display the user show page.
 router.put("/users/:id/update", usersController.update, usersController.redirectView);
 router.delete("/users/:id/delete", usersController.delete, usersController.redirectView);
 router.get("/users/:id", usersController.show, usersController.showView);

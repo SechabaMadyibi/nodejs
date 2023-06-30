@@ -1,5 +1,5 @@
 "use strict";
-
+//put content type on exports objects
 module.exports = {
   html: {
     "Content-Type": "text/html"

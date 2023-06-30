@@ -3,10 +3,11 @@ const mongoose = require("mongoose"),
   Course = require("./models/course");
 var testCourse, testSubscriber;
 mongoose.connect(
-  "mongodb://localhost:27017/recipe_db",
+  "mongodb://127.0.0.1:27017/recipe_db",
   { useNewUrlParser: true }
 );
 mongoose.Promise = global.Promise;
+
 Subscriber.remove({})
   .then(items => console.log(`Removed ${items.n} records!`))
   .then(() => {

@@ -9,12 +9,13 @@ mongoose.connect(
   { useNewUrlParser: true }
 );
 mongoose.Promise = global.Promise;
-
+//Remove all subscribers and courses.
 Subscriber.remove({})
   .then(items => console.log(`Removed ${items.n} records!`))
   .then(() => {
     return Course.remove({});
   })
+
   .then(items => console.log(`Removed ${items.n} records!`))
   .then(() => {
     return Subscriber.create({
@@ -48,15 +49,18 @@ Subscriber.remove({})
     console.log(`Created course: ${course.title}`);
   })
   .then(() => {
+    //Associate the course with subscriber.
     testSubscriber.courses.push(testCourse);
     testSubscriber.save();
   })
   .then(() => {
+    //Populate course document in subscriber
     return Subscriber.populate(testSubscriber, "courses");
   })
   .then(subscriber => console.log(subscriber))
   .then(() => {
     return Subscriber.find({
+      //Query subscribers where ObjectId is same as course.
       courses: mongoose.Types.ObjectId(testCourse._id)
     });
   })

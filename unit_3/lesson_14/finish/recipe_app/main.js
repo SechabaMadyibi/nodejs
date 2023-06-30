@@ -14,13 +14,14 @@ mongoose.connect(
 );
 mongoose.set("useCreateIndex", true);
 const db = mongoose.connection;
-
+//Log a message when the application connects to the database.
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
 });
-
+//Run a query with a callback function to handle errors and data.
 var myQuery = Subscriber.findOne({
   name: "Jon Wexler"
+  //Query the  name "John Wexler where email contains the word wexler"
 }).where("email", /wexler/);
 
 myQuery.exec((error, data) => {

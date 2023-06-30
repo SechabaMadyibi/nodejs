@@ -11,7 +11,8 @@ app.use((req, res, next) => {
 
 app.get("/items/:vegetable", (req, res) => {
   let veg = req.params.vegetable;
-  res.send(`This is the page for ${veg}`);
+res.send(`This is the page for ${veg}`);
+//put switch statement
 });
 
 app.listen(port, () => {

@@ -11,15 +11,15 @@ const express = require("express"),
   coursesController = require("./controllers/coursesController"),
   Subscriber = require("./models/subscriber");
 mongoose.Promise = global.Promise;
-
+//Set up the connection to your database.
 mongoose.connect(
   "mongodb://localhost:27017/recipe_db",
   { useNewUrlParser: true }
 );
 mongoose.set("useCreateIndex", true);
-
+//Assign the database to the db variable.Assign the database to the db variable.
 const db = mongoose.connection;
-
+//Log a message when the application connects to the database.
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
 });

@@ -1,5 +1,7 @@
+//Wait for the DOM to load
 $(document).ready(() => {
   $("#modal-button").click(() => {
+    //Handle a click event on the modal button.
     $(".modal-body").html("");
     $.get(`/api/courses`, (results = {}) => {
       let data = results.data;

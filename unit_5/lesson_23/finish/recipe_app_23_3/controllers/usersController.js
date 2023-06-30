@@ -142,7 +142,7 @@ module.exports = {
         } else {
           req.flash("error", "Failed to log in user account: User account not found.");
           res.locals.redirect = "/users/login";
-          next();
+         next();
         }
       })
       .catch(error => {

@@ -8,7 +8,7 @@ const express = require("express"),
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
-
+// takes an absolute path to the folder containing your static files
 app.use(express.static("public"));
 app.use(layouts);
 app.use(

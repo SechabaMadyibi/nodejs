@@ -44,21 +44,26 @@ const mongoose = require("mongoose"),
 userSchema.virtual("fullName").get(function() {
   return `${this.name.first} ${this.name.last}`;
 });
-
+//Use the function keyword in the callback
 userSchema.pre("save", function(next) {
   let user = this;
+  //Add a quick conditional check for existing subscriber connections.
   if (user.subscribedAccount === undefined) {
+    //Query for a single subscriber.
     Subscriber.findOne({
       email: user.email
     })
       .then(subscriber => {
+        //Connect the user with a subscriber account.
         user.subscribedAccount = subscriber;
         next();
       })
+      //Pass any errors to the next middleware function.
       .catch(error => {
         console.log(`Error in connecting subscriber:${error.message}`);
         next(error);
       });
+      //Call next function if user already has an association.
   } else {
     next();
   }

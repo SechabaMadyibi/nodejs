@@ -3,6 +3,7 @@
 const port = 3000,
   http = require("http"),
   httpStatus = require("http-status-codes"),
+  //FS(file system, allows application to interact with files on our computer )
   fs = require("fs");
 const getViewUrl = url => {
   return `views${url}.html`;

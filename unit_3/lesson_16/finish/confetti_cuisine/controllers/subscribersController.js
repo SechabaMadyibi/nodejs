@@ -1,7 +1,7 @@
 "use strict";
 
 const Subscriber = require("../models/subscriber");
-
+//Retrieve all subscribers.
 exports.getAllSubscribers = (req, res) => {
   Subscriber.find({})
     .exec()
@@ -18,11 +18,11 @@ exports.getAllSubscribers = (req, res) => {
       console.log("promise complete");
     });
 };
-
+//Render the contact page
 exports.getSubscriptionPage = (req, res) => {
   res.render("contact");
 };
-
+//Save subscribers.
 exports.saveSubscriber = (req, res) => {
   let newSubscriber = new Subscriber({
     name: req.body.name,

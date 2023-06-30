@@ -135,31 +135,41 @@ module.exports = {
     }
     res.json(errorObject);
   },
+  //Add the join action to let users join a course.
   join: (req, res, next) => {
     let courseId = req.params.id,
+    //Get the course id and current user from the request.
       currentUser = req.user;
+      //Check whether a current user is logged in.
     if (currentUser) {
       User.findByIdAndUpdate(currentUser, {
         $addToSet: {
+          //Update the user’s courses field to contain the targeted course.
           courses: courseId
         }
       })
         .then(() => {
+          //Respond with a JSON object with a success indicator.
           res.locals.success = true;
           next();
         })
+        //Respond with a JSON object with an error indicator.
         .catch(error => {
           next(error);
         });
     } else {
+      //Pass an error through to the next middleware function
       next(new Error("User must log in."));
     }
   },
   filterUserCourses: (req, res, next) => {
     let currentUser = res.locals.currentUser;
+    //Check whether a user is logged in.
     if (currentUser) {
       let mappedCourses = res.locals.courses.map(course => {
+        //Modify course data to add a flag indicating user association.
         let userJoined = currentUser.courses.some(userCourse => {
+          //Check whether the course exists in the user’s courses array
           return userCourse.equals(course._id);
         });
         return Object.assign(course.toObject(), { joined: userJoined });

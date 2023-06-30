@@ -3,12 +3,13 @@
 const port = 3000,
   express = require("express"),
   app = express();
-
+// parse icoming requests that are url encoded
 app.use(
   express.urlencoded({
     extended: false
   })
 );
+//incoming data must be in Json format
 app.use(express.json());
 
 app.use((req, res, next) => {

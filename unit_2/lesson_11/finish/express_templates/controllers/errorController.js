@@ -3,7 +3,9 @@
 const httpStatus = require("http-status-codes");
 
 exports.logErrors = (error, req, res, next) => {
+  //log error stack
   console.error(error.stack);
+  // passing the error object in case it needs to be processed further.
   next(error);
 };
 

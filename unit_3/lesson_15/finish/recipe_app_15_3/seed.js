@@ -26,7 +26,7 @@ var contacts = [
     zipCode: 19103
   }
 ];
-
+//Remove all existing data.
 Subscriber.deleteMany()
   .exec()
   .then(() => {
@@ -34,7 +34,7 @@ Subscriber.deleteMany()
   });
 
 var commands = [];
-
+//Loop through subscriber objects to create promises.
 contacts.forEach(c => {
   commands.push(
     Subscriber.create({
@@ -43,6 +43,7 @@ contacts.forEach(c => {
     })
   );
 });
+
 
 Promise.all(commands)
   .then(r => {

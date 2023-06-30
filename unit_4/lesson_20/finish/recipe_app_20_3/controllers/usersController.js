@@ -61,10 +61,13 @@ module.exports = {
   showView: (req, res) => {
     res.render("users/show");
   },
+  //Add the edit action.
   edit: (req, res, next) => {
     let userId = req.params.id;
+    //Use findById to locate a user in the database by their ID.
     User.findById(userId)
       .then(user => {
+        //Render the user edit page for a specific user in the database.
         res.render("users/edit", {
           user: user
         });
@@ -74,8 +77,10 @@ module.exports = {
         next(error);
       });
   },
+  //Add the update action.
   update: (req, res, next) => {
     let userId = req.params.id,
+    //Collect user parameters from request.
       userParams = {
         name: {
           first: req.body.first,
@@ -85,11 +90,13 @@ module.exports = {
         password: req.body.password,
         zipCode: req.body.zipCode
       };
+      //Use findByIdAndUpdate to locate a user by ID and update the document record in one command.
     User.findByIdAndUpdate(userId, {
       $set: userParams
     })
       .then(user => {
         res.locals.redirect = `/users/${userId}`;
+        //Add user to response as a local variable, and call the next middleware function.
         res.locals.user = user;
         next();
       })
@@ -98,6 +105,7 @@ module.exports = {
         next(error);
       });
   },
+  //Deleting a user with the findByIdAndRemove method
   delete: (req, res, next) => {
     let userId = req.params.id;
     User.findByIdAndRemove(userId)

@@ -15,15 +15,16 @@ mongoose.connect(
 );
 mongoose.set("useCreateIndex", true);
 const db = mongoose.connection;
-
+//Log a message when the application connects to the database.
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
 });
-
+ 
+//Query the  name "John Wexler where email contains the word wexler"
 var myQuery = Subscriber.findOne({
   name: "Jon Wexler"
 }).where("email", /wexler/);
-
+//Run a query with a callback function to handle errors and data.
 myQuery.exec((error, data) => {
   if (data) console.log(data.name);
 });
@@ -45,6 +46,7 @@ app.get("/name", homeController.respondWithName);
 app.get("/items/:vegetable", homeController.sendReqParam);
 
 app.get("/subscribers", subscribersController.getAllSubscribers, (req, res, next) => {
+  //Render  the data on request object.the browser window.
   res.render("subscribers", { subscribers: req.data });
 });
 

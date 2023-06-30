@@ -11,6 +11,7 @@ const port = 3000,
   htmlContentType = {
     "Content-Type": "text/html"
   },
+  // function to read files on our computer using fs module
   customReadFile = (file, res) => {
     fs.readFile(`./${file}`, (errors, data) => {
       if (errors) {
@@ -23,6 +24,7 @@ router.get("/", (req, res) => {
   res.writeHead(httpStatusCodes.OK, plainTextContentType);
   res.end("INDEX");
 });
+//get user request and check and print message on index.hmtl file on our computer files
 router.get("/index.html", (req, res) => {
   res.writeHead(httpStatusCodes.OK, htmlContentType);
   customReadFile("views/index.html", res);

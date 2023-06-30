@@ -42,9 +42,10 @@ router.use(
   })
 );
 router.use(express.json());
-
+//Configure cookieParser with a secret key.
 router.use(cookieParser("secretCuisine123"));
 router.use(
+  //Configure Express.js to use sessions.
   expressSession({
     secret: "secretCuisine123",
     cookie: {
@@ -55,15 +56,21 @@ router.use(
   })
 );
 router.use(connectFlash());
-
+//Configure Express.js to initialize and use passport.
 router.use(passport.initialize());
+//Instruct passport to use sessions.
 router.use(passport.session());
+//Set up the default login strategy.
 passport.use(User.createStrategy());
+//Set up passport to compact, encrypt,and decrypt user data.
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 router.use((req, res, next) => {
+  //Set up the loggedIn variable to reflectpassport login status.
   res.locals.loggedIn = req.isAuthenticated();
+  //Assign flash messages to a local variable.
+  //Set up the currentUser variable to reflect a logged-in user.
   res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
   next();
@@ -73,14 +80,18 @@ router.get("/", homeController.index);
 
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
+//Add validation middleware to the user create route.
 router.post(
   "/users/create",
   usersController.validate,
   usersController.create,
   usersController.redirectView
 );
+//Route to the login action.
 router.get("/users/login", usersController.login);
+//Send posted data to an authenticate action.
 router.post("/users/login", usersController.authenticate);
+//Add a route to logout and redirect to a view.
 router.get("/users/logout", usersController.logout, usersController.redirectView);
 router.get("/users/:id/edit", usersController.edit);
 router.put("/users/:id/update", usersController.update, usersController.redirectView);

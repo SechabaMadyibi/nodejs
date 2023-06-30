@@ -17,11 +17,11 @@ exports.handle = (req, res) => {
     utils.getFile("views/error.html", res);
   }
 };
-
+// Get request 
 exports.get = (url, action) => {
   routes["GET"][url] = action;
 };
-
+// Post request
 exports.post = (url, action) => {
   routes["POST"][url] = action;
 };

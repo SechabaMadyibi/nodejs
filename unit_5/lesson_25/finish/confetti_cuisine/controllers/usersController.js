@@ -33,11 +33,12 @@ module.exports = {
   new: (req, res) => {
     res.render("users/new");
   },
-
+//Add the create action to register users.
   create: (req, res, next) => {
     if (req.skip) next();
     let newUser = new User(getUserParams(req.body));
     User.register(newUser, req.body.password, (e, user) => {
+      //Respond with flash messages.
       if (user) {
         req.flash("success", `${user.fullName}'s account created successfully!`);
         res.locals.redirect = "/users";
@@ -117,10 +118,13 @@ module.exports = {
         next();
       });
   },
+  //Add an action to render my form for browser viewing.
   login: (req, res) => {
     res.render("users/login");
   },
+
   validate: (req, res, next) => {
+    //Sanitize and check input field data.
     req
       .sanitizeBody("email")
       .normalizeEmail({
@@ -142,6 +146,7 @@ module.exports = {
       if (!error.isEmpty()) {
         let messages = error.array().map(e => e.msg);
         req.skip = true;
+        //Collect errors, and respond with flash messages.
         req.flash("error", messages.join(" and "));
         res.locals.redirect = "/users/new";
         next();
@@ -150,12 +155,14 @@ module.exports = {
       }
     });
   },
+  //Add authentication middleware with redirect and flashmessage options.
   authenticate: passport.authenticate("local", {
     failureRedirect: "/users/login",
     failureFlash: "Failed to login.",
     successRedirect: "/",
     successFlash: "Logged in!"
   }),
+//Add an action to log users out.
   logout: (req, res, next) => {
     req.logout();
     req.flash("success", "You have been logged out!");

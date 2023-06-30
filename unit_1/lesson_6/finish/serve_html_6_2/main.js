@@ -16,6 +16,7 @@ const sendErrorResponse = res => {
 http
   .createServer((req, res) => {
     let url = req.url;
+    //checks for file extension (.html) once url request is sent to server by the user
     if (url.indexOf(".html") !== -1) {
       res.writeHead(httpStatus.OK, {
         "Content-Type": "text/html"
@@ -42,7 +43,7 @@ http
   })
   .listen(3000);
 console.log(`The server is listening on port number: ${port}`);
-
+// check if user file path exists 
 const customReadFile = (file_path, res) => {
   if (fs.existsSync(file_path)) {
     fs.readFile(file_path, (error, data) => {
