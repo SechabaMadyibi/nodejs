@@ -5,6 +5,8 @@ const ejs = require('ejs')
 app.set('view engine', 'ejs')
 const mongoose = require('mongoose');
 const BlogPost = require('./models/BlogPost.js')
+const fileUpload = require('express-fileupload')
+
 mongoose.connect('mongodb://127.0.0.1/my_database', {
   useNewUrlParser:
     true
@@ -12,21 +14,22 @@ mongoose.connect('mongodb://127.0.0.1/my_database', {
 app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded())
+app.use(fileUpload())
 
 app.get('/',async (req,res)=>{
   const blogposts = await BlogPost.find({})
   res.render('index',{
   blogposts
   });
- // console.log(blogposts);
+
  })
 
 app.get('/about', (req, res) => {
-  //res.sendFile(path.resolve(__dirname,'pages/about.html'))
+  
   res.render('about')
 })
 app.get('/contact', (req, res) => {
-  //res.sendFile(path.resolve(__dirname,'pages/contact.html'))
+
   res.render('contact')
 })
 
@@ -41,8 +44,10 @@ app.get('/posts/new', (req, res) => {
 })
 
 app.post('/posts/store', (req, res) => {
+  let image = req.files.image;
+  image.mv(path.resolve(__dirname,'public/img',image.name) )
   // model creates a new doc with browser data
-  BlogPost.create(req.body)
+     BlogPost.create({...req.body, image: '/img/' + image.name})
     .then(blogpost => res.redirect('/'))
     .catch(error => console.log(error));
 
