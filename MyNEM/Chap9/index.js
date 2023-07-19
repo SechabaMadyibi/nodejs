@@ -1,11 +1,14 @@
 const express = require('express')
-const path = require('path')
 const app = new express()
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
 const mongoose = require('mongoose');
-const BlogPost = require('./models/BlogPost.js')
 const fileUpload = require('express-fileupload')
+const newPostController = require('./controllers/newPost')
+const homeController = require('./controllers/home')
+const storePostController = require('./controllers/storePost')
+const getPostController = require('./controllers/getPost')
+const validateMiddleware = require("./middleware/validationMiddleware");
 
 mongoose.connect('mongodb://127.0.0.1/my_database', {
   useNewUrlParser:
@@ -16,56 +19,20 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 
-const customMiddleWare = (req,res,next)=>{
-  console.log('Custom middle ware called')
-  next()
- }
- app.use(customMiddleWare)
- 
 
-const validateMiddleWare = (req,res,next)=>{
-  if(req.files == null || req.body.title == null){
-  return res.redirect('/posts/new')
-  }
-  next()
- }
- app.use('/posts/store',validateMiddleWare);
+app.use('/posts/store', validateMiddleware);
+app.get('/', homeController)
+app.get('/post/:id', getPostController)
+app.post('/posts/store', storePostController)
 
-app.get('/',async (req,res)=>{
-  const blogposts = await BlogPost.find({})
-  res.render('index',{
-  blogposts
-  });
+app.get('/about', newPostController)
 
- })
+app.get('/contact', newPostController)
 
-app.get('/about', (req, res) => {
-  
-  res.render('about')
-})
-app.get('/contact', (req, res) => {
+app.get('/posts/new', newPostController)
 
-  res.render('contact')
-})
+app.get('/post', newPostController)
 
-app.get('/post/:id',async (req,res)=>{
-  const blogpost = await BlogPost.findById(req.params.id)
-  res.render('post',{
-  blogpost
-  })
- })
-app.get('/posts/new', (req, res) => {
-  res.render('create')
-})
-
-app.post('/posts/store', (req, res) => {
-  let image = req.files.image;
-  image.mv(path.resolve(__dirname,'public/img',image.name))
-    .then (() => BlogPost.create({...req.body, image: '/img/' + image.name}))
-    .then(blogpost => res.redirect('/'))
-    .catch(error => console.log(error))
-  
-})
 
 
 app.listen(4000, () => {
