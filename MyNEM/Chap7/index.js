@@ -13,8 +13,8 @@ mongoose.connect('mongodb://127.0.0.1/my_database', {
 })
 app.use(express.static('public'))
 app.use(express.json())
-app.use(express.urlencoded())
-app.use(fileUpload())
+app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 app.get('/',async (req,res)=>{
   const blogposts = await BlogPost.find({})
@@ -47,7 +47,7 @@ app.post('/posts/store', (req, res) => {
   let image = req.files.image;
   image.mv(path.resolve(__dirname,'public/img',image.name) )
   // model creates a new doc with browser data
-     BlogPost.create({...req.body, image: '/img/' + image.name})
+     .then (() => BlogPost.create({...req.body, image: '/img/' + image.name}))
     .then(blogpost => res.redirect('/'))
     .catch(error => console.log(error));
 
