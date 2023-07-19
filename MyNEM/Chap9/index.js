@@ -16,6 +16,21 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 
+const customMiddleWare = (req,res,next)=>{
+  console.log('Custom middle ware called')
+  next()
+ }
+ app.use(customMiddleWare)
+ 
+
+const validateMiddleWare = (req,res,next)=>{
+  if(req.files == null || req.body.title == null){
+  return res.redirect('/posts/new')
+  }
+  next()
+ }
+ app.use('/posts/store',validateMiddleWare);
+
 app.get('/',async (req,res)=>{
   const blogposts = await BlogPost.find({})
   res.render('index',{
