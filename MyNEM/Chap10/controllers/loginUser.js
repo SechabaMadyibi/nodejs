@@ -15,13 +15,12 @@ module.exports = (req, res) => {
             }
         })
         .then(same => {
-            if (same) { // if passwords match
-                // store user session, will talk about it later
-                res.redirect('/')
+            if (same) { 
+                res.redirect('/');
             }
             else {
                 console.log("Ivalid password");
-                res.redirect('/auth/login')
+                res.redirect('/auth/login');
             }
         })
         .catch(error => {
