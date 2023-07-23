@@ -18,13 +18,15 @@ module.exports = (req, res) => {
                     else {
                         console.log("Invalid password");
                        req.flash("error", "Invalid Password")
+                       req.flash('data',req.body)
                         res.redirect('/auth/login');
                     }
                 })
             }
             else {
-                console.log("invalid username ");
+                console.log("Invalid username ");
                 req.flash("error", "Invalid User Name")
+                req.flash('data',req.body)
                 res.redirect('/auth/login');
             }
         })
